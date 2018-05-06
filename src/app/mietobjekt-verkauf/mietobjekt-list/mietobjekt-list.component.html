@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Ausgeschriebene Mietobjekte</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <mietobjekt-item *ngFor="let mietvertragEL of mietvertraege;"
+    [mietvertrag]="mietvertragEL"></mietobjekt-item>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <hr>
+  </div>
+</div>

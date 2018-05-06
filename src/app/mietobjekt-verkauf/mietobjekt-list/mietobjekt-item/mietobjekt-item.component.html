@@ -1,0 +1,54 @@
+<a class="list-group-item clearfix">
+  <div class="pull-left">
+    <p><strong>ObjektNr.: {{mietvertrag.mietgegenstand.objektnummer}} /
+      LiegenschaftsNr.: {{mietvertrag.mietgegenstand.liegenschaftsnr}} /
+      Adresse: {{mietvertrag.mietgegenstand.adresse}}</strong></p>
+    <p>Nettomiete: {{mietvertrag.miete.nettomiete}} CHF / Nebenkosten:
+      {{mietvertrag.miete.nebenkosten}} CHF / Mietkaution:
+      {{mietvertrag.miete.mietkaution}} ETH</p>
+    <p>Mietbeginn: {{mietvertrag.mietbeginn}} / Haustiere erlaubt: {{mietvertrag.konditionen.haustiereErlaubt === true ? 'ja' : 'nein' }}</p>
+    <p><strong>Vertragsstatus:
+      <div [statusColor]="mietvertrag.status">{{mietvertrag.statusString === 'vermietet' ? 'vermietet (Kaution bezahlt)' : mietvertrag.statusString}}</div>
+    </strong></p>
+    <p *ngIf="mietvertrag.statusString === 'vermietet'">
+      <strong>Mieter name: {{ mieterName }} </strong>
+    </p>
+    <hr>
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Interessenten</h4>
+        <div *ngIf="mietvertrag.interessenten?.length > 0; else infoText">
+          <ul class="list-group">
+            <li class="list-group-item"
+                *ngFor="let interessent of mietvertrag.interessenten; let i = index;">
+              <div class="row">
+                <div class="col-xs-6">
+                  Name: {{interessent.name}}<br>
+                  Hat Betreibungen: {{interessent.hasBetreibungen === true ? 'ja' : 'nein'}}
+                </div>
+                <div class="col-xs-2"></div>
+                <div class="col-xs-4">
+                  <button class="btn btn-primary" type="button"
+                          (click)="onClickSelektiert(i)"
+                          [disabled]="mietvertrag.statusString !== 'ausgeschrieben'">
+                    Selektieren
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <ng-template #infoText>
+          <p>Noch keine Interessenten!</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <span class="pull-right">
+        <img
+          [src]="mietvertrag.imagePath"
+          alt="{{'Mietobjektnr. -'}}{{mietvertrag.mietgegenstand.objektnummer}}"
+          class="img-responsive"
+          style="max-width: 600px;">
+  </span>
+</a>

@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-md-12">
+    <h2>Bewerbung - Mietobjekte</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <a class="list-group-item clearfix"
+       *ngFor="let mietvertrag of mietvertraege; let vtrgIndex = index;">
+      <div class="pull-left">
+        <p><strong>ObjektNr.: {{mietvertrag.mietgegenstand.objektnummer}} /
+          LiegenschaftsNr.: {{mietvertrag.mietgegenstand.liegenschaftsnr}} /
+          Adresse: {{mietvertrag.mietgegenstand.adresse}}</strong></p>
+        <p>Nettomiete: {{mietvertrag.miete.nettomiete}} / Nebenkosten:
+          {{mietvertrag.miete.nebenkosten}} / Mietkaution:
+          {{mietvertrag.miete.mietkaution}}</p>
+        <p>Mietbeginn: {{mietvertrag.mietbeginn}} / Haustiere erlaubt:
+          {{mietvertrag.konditionen.haustiereErlaubt === true ? 'ja' : 'nein'}}</p>
+        <p><strong>Vertragsstatus:
+          <div [statusColor]="mietvertrag.status">{{mietvertrag.statusString ===
+            'vermietet' ? 'vermietet (Kaution bezahlt)' : mietvertrag.statusString}}
+          </div>
+        </strong></p>
+        <hr style="margin-top:45px;">
+        <div class="row" style="margin-top:35px;">
+          <div class="col-xs-12">
+            <h4>Deine Bewerbung</h4>
+            <form (ngSubmit)="onSubmit(f, mietvertrag.index)" #f="ngForm">
+              <div class="row">
+                <div class="col-sm-4 form-group">
+                  <label for="bewerberName">Name</label>
+                  <input
+                    type="text"
+                    id="bewerberName"
+                    class="form-control"
+                    name="bewerberName"
+                    ngModel
+                    required
+                  >
+                </div>
+                <div class="col-sm-8 form-group">
+                  <label for="bewerberAddress">Digitale Identität: SmartContract
+                    Adresse</label>
+                  <input
+                    type="text"
+                    id="bewerberAddress"
+                    class="form-control"
+                    name="bewerberAddress"
+                    ngModel
+                    required
+                  >
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-2 form-group">
+                  <button class="btn btn-primary" type="submit"
+                          [disabled]="mietvertrag.statusString !== 'ausgeschrieben'"
+                  >Bewerbe dich!
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 20px;"></div>
+        <hr>
+        <div class="row">
+          <div class="col-xs-12">
+            <h4>Angenommener Bewerber (Anzahl Bewerbungen: {{mietvertrag.interessenten.length}} )</h4>
+            <div *ngIf="mietvertrag.interessenten?.length > 0; else infoText">
+              <ul class="list-group"
+                  *ngFor="let interessent of mietvertrag.interessenten; let i = index;">
+                <li class="list-group-item" *ngIf="interessent.isSelected;">
+                  <div class="row">
+                    <div class="col-xs-5" style="margin-top: 7px;">
+                      <strong>Name:</strong> {{interessent.name}}
+                    </div>
+                    <div class="col-xs-4" style="margin-left: 65px;">
+                      <button class="btn btn-primary" type="button"
+                              [disabled]="!interessent.isSelected || mietvertrag.statusString === 'vermietet'"
+                              (click)="onClickAbschliessen(i, vtrgIndex)"
+                      >{{mietvertrag.statusString !==
+                        'vermietet' ? 'Vertrag abschliessen!' : 'Vertrag abgeschlossen'}}
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ng-template #infoText>
+              <p>Noch keine Interessenten!</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <span class="pull-right">
+        <img
+          [src]="mietvertrag.imagePath"
+          alt="{{'Mietobjektnr. -'}}{{mietvertrag.mietgegenstand.objektnummer}}"
+          class="img-responsive"
+          style="max-width: 600px;">
+     </span>
+    </a>
+  </div>
+</div>

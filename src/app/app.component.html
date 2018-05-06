@@ -1,0 +1,9 @@
+<app-header (featureSelected)="onNavigate($event)"></app-header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <mietobjekt-verkauf *ngIf="loadedFeature === 'verkauf'"></mietobjekt-verkauf>
+      <mietobjekt-bewerbung *ngIf="loadedFeature !== 'verkauf'"></mietobjekt-bewerbung>
+    </div>
+  </div>
+</div>
